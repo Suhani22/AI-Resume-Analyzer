@@ -1,5 +1,6 @@
 from flask import Flask , render_template, request
 from utils.pdf_reader import extract_text
+from utils.skill_extractor import extract_skills
 
 import os
 
@@ -17,7 +18,11 @@ def upload():
     file_path= os.path.join(UPLOAD_FOLDER, resume.filename)
     resume.save(file_path)
     text = extract_text(file_path)
-    return "Resume Uploaded Successfully!"
+    skills= extract_skills(text)
+    print("Extracted Skills:", skills)
+    return render_template(
+    "results.html",
+    skills=skills)
 
 if __name__ == '__main__':
     app.run(debug=True)
