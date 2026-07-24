@@ -1,6 +1,7 @@
 from flask import Flask , render_template, request
 from utils.pdf_reader import extract_text
-from utils.skill_extractor import extract_skills
+from utils.skill_extractor import (extract_skills, SKILLS, find_missing_skills)
+from utils.resume_scorer import calculate_score
 
 import os
 
@@ -19,10 +20,15 @@ def upload():
     resume.save(file_path)
     text = extract_text(file_path)
     skills= extract_skills(text)
+    matching_skills = extract_skills(text)
+    score = calculate_score(skills, len(SKILLS))  
     print("Extracted Skills:", skills)
+    print("Resume Score:", score)
     return render_template(
     "results.html",
-    skills=skills)
+    skills=skills,
+    missing_skills=find_missing_skills(skills),
+    score=score)
 
 if __name__ == '__main__':
     app.run(debug=True)
