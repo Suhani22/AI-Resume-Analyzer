@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title> AI Resume Analyzer</title>
-    </head>
 
-    <body>
-        <h1>Welcome to AI Resume Analyzer</h1>
-        <p>Your AI-powered resume analysis tool is here!</p>
+<head>
+    <title> AI Resume Analyzer</title>
+</head>
 
-        <form action="upload"
-        method="post"
-        enctype="multipart/form-data">
-        <input type ="file"
-        name="resume"
-        accept=".pdf">
+<body>
+    <h1>Welcome to AI Resume Analyzer</h1>
+    <p>Your AI-powered resume analysis tool is here!</p>
+
+    <form action="upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="resume" accept=".pdf">
         >
 
+        <label>Job Description</label>
+
+        <br><br>
+
+        <textarea name="job_description" rows="10" cols="60" placeholder="Paste the Job Description here..."></textarea>
+
+        <br><br>
         <button type="submit">Upload Resume </button>>
     </form>
-    </body>
+</body>
+
 </html>

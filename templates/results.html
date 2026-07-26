@@ -2,68 +2,55 @@
 <html>
 <head>
     <title>Resume Analysis</title>
-    <style>
-        body{
-            font-family:Arial, sans-serif;
-            background:#f4f6f9;
-            margin:40px;
-        }
+    <link rel="stylesheet" 
+    href = "{{url_for('static', filename= 'style.css')}}">
 
-        .container{
-            width:700px;
-            margin:auto;
-            background:white;
-            padding:30px;
-            border-radius:12px;
-            box-shadow:0px 0px 15px rgba(0,0,0,0.1);
-        }
-        h1{text-align:center;
-            color:#2c3e50;}
-        
-            h2{
-            color:#34495e;
-        }
-
-        ul{
-            list-style:none;
-            padding:0;
-        }
-
-        li{
-            padding:8px;
-            margin:6px 0;
-            background:#ecf0f1;
-            border-radius:6px;
-        }
-
-        .score{
-            text-align:center;
-            font-size:28px;
-            color:green;
-            font-weight:bold;
-        }
-
-    </style>
 </head>
 <body>
     <div class="container">
     <h1>Resume Analyzer</h1>
 
-    <div class="score">Score: {{ score }}/100</div>
-    <h2>Detected Skills</h2>
+    <div class="cards">
+        <div class="card">
+        <h2> Resume score</h2>
+        <h1> {{score}}/100</h1>
+        <div class="progress">
+            <div class="progress-fill" style="width: {{score}}%"></div>
+        </div>
+        </div>
 
-    <ul>
-        {% for skill in skills %}
-            <li>{{ skill }}</li>
-        {% endfor %}
-    </ul>
-    <hr>
-    <h2>Missing Skills</h2>
-    <ul>
-        {% for skill in missing_skills %}
-            <li>{{ skill }}</li>
-        {% endfor %}
-    </ul>
+        <div class = "card">
+            <h2>Job Match</h2>
+            <h1>{{job_match}}%</h1>
+
+            <div class="progress">
+            <div class="progress-fill" style="width: {{job_match}}%"></div>
+        </div>
+        </div>
+    </div>
+
+    <div class = "skills-section">
+        <div class="skills-card detected">
+            <h2>✅ Detected Skills</h2>
+
+        <ul>
+            {% for skill in skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+
+        </div>
+
+        <div class="skills-card missing">
+            <h2>❌ Missing Skills</h2>
+            <ul>
+            {% for skill in missing_skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+    </div>
     </div>
 </body>
 </html>
