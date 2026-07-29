@@ -28,7 +28,7 @@ def upload():
     job_skills= extract_skills(job_description)
     missing_skills= find_missing_skills(skills)
 
-    suggestions= generate_suggestions(missing_skills)
+    suggestions= generate_suggestions(text, job_description, skills, missing_skills)
 
     score = calculate_score(skills, len(SKILLS)) 
     job_match = calculate_match(skills, job_skills) 
@@ -39,9 +39,9 @@ def upload():
     "results.html",
     skills=skills,
     missing_skills=missing_skills,
+    suggestions=suggestions,
     score=score,
-    job_match=job_match,
-    suggestions=suggestions
+    job_match=job_match
     )
 
 if __name__ == '__main__':

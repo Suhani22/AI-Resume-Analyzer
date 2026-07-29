@@ -109,3 +109,17 @@ li {
 .skills-card h2{
     margin-bottom:20px;
 }
+
+.ai-feedback{
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.ai-feedback pre{
+    white-space: pre-wrap;
+    font-family: inherit;
+    margin: 0;
+    line-height: 1.6;
+}

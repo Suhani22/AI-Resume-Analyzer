@@ -1,35 +1,59 @@
-def generate_suggestions(missing_skills):
+import os
+from dotenv import load_dotenv
+from google import genai
 
-    suggestions = []
+load_dotenv()
+API_KEY = os.getenv("GEMINI_API_KEY")
 
-    if "Flask" in missing_skills:
-        suggestions.append(
-            "Build a Flask project to strengthen your backend development skills."
-        )
+client = genai.Client(api_key=API_KEY)
 
-    if "Git" in missing_skills:
-        suggestions.append(
-            "Learn Git and upload your projects to GitHub."
-        )
+def generate_suggestions(
+    resume_text,
+    job_description,
+    detected_skills,
+    missing_skills
+):
+    prompt = f"""
+    You are an expert ATS Resume Reviewer and technical recruiter.
+    Your goal is to help candidates improve their resumes for software engineering internships and jobs.
+    Resume:{resume_text}
+    Job Description: {job_description}
 
-    if "SQL" in missing_skills:
-        suggestions.append(
-            "Practice SQL queries and database design."
-        )
+    Detected_skills:{", ".join(detected_skills)}
 
-    if "HTML" in missing_skills:
-        suggestions.append(
-            "Improve your HTML skills to build better web applications."
-        )
+    Missing skills: {", ".join(missing_skills)}
 
-    if "CSS" in missing_skills:
-        suggestions.append(
-            "Practice CSS layouts like Flexbox and Grid."
-        )
+    Respond in the following format:
 
-    if "Machine Learning" in missing_skills:
-        suggestions.append(
-            "Complete one Machine Learning project using Python."
-        )
+    ## Resume Strengths
+    - Mention 3 strengths.
 
-    return suggestions
+    ## Areas for Improvement
+    - Mention 3 weaknesses.
+
+    ## ATS Score Improvement Tips
+    - Suggest concrete improvements to increase ATS score.
+
+    ## Recommended Projects
+    - Suggest 2 portfolio projects based on the missing skills.
+
+    Keep the response under 250 words.
+    Use bullet points.
+    Be specific and actionable.
+    """
+
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt)
+        return response.text
+
+    except Exception as e:
+        return """
+        ## AI Feedback
+
+        The AI service is temporarily unavailable.
+
+        Your resume has still been analyzed successfully.
+        Please try again in a few minutes.
+        """
