@@ -110,16 +110,22 @@ li {
     margin-bottom:20px;
 }
 
-.ai-feedback{
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 15px;
+.ai-feedback-card{
+    margin-top:30px;
+    padding:25px;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
 }
 
-.ai-feedback pre{
+.ai-feedback-card h2{
+    margin-bottom:15px;
+}
+
+.ai-feedback-card pre {
     white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     font-family: inherit;
-    margin: 0;
     line-height: 1.6;
 }

@@ -1,11 +1,12 @@
 import os
 from dotenv import load_dotenv
-from google import genai
+from groq import Groq
 
 load_dotenv()
-API_KEY = os.getenv("GEMINI_API_KEY")
 
-client = genai.Client(api_key=API_KEY)
+API_KEY = os.getenv("GROQ_API_KEY")
+
+client = Groq(api_key=API_KEY)
 
 def generate_suggestions(
     resume_text,
@@ -14,46 +15,63 @@ def generate_suggestions(
     missing_skills
 ):
     prompt = f"""
-    You are an expert ATS Resume Reviewer and technical recruiter.
-    Your goal is to help candidates improve their resumes for software engineering internships and jobs.
-    Resume:{resume_text}
-    Job Description: {job_description}
+You are an experienced ATS Resume Reviewer and Career Coach.
 
-    Detected_skills:{", ".join(detected_skills)}
+Analyze the following resume against the job description.
 
-    Missing skills: {", ".join(missing_skills)}
+Resume:
+{resume_text}
 
-    Respond in the following format:
+Job Description:
+{job_description}
 
-    ## Resume Strengths
-    - Mention 3 strengths.
+Detected Skills:
+{", ".join(detected_skills)}
 
-    ## Areas for Improvement
-    - Mention 3 weaknesses.
+Missing Skills:
+{", ".join(missing_skills)}
 
-    ## ATS Score Improvement Tips
-    - Suggest concrete improvements to increase ATS score.
+Respond in this format:
 
-    ## Recommended Projects
-    - Suggest 2 portfolio projects based on the missing skills.
+## Resume Strengths
+- Mention 3 strengths.
 
-    Keep the response under 250 words.
-    Use bullet points.
-    Be specific and actionable.
-    """
+## Areas for Improvement
+- Mention 3 weaknesses.
+
+## ATS Score Improvement Tips
+- Give practical ATS improvement suggestions.
+
+## Recommended Projects
+- Suggest 2 projects based on the missing skills.
+
+Keep the response under 250 words.
+Use bullet points.
+Be specific and actionable.
+"""
 
     try:
-        response = client.models.generate_content(
-            model="gemini-2.0-flash",
-            contents=prompt)
-        return response.text
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.3,
+            max_tokens=500
+        )
+
+        return response.choices[0].message.content
 
     except Exception as e:
-        return """
+        print(e)
+
+        return f"""
         ## AI Feedback
 
-        The AI service is temporarily unavailable.
+        Groq API Error
 
-        Your resume has still been analyzed successfully.
-        Please try again in a few minutes.
+        {e}
         """
