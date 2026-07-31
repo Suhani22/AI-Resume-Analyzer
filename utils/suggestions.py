@@ -15,9 +15,9 @@ def generate_suggestions(
     missing_skills
 ):
     prompt = f"""
-You are an experienced ATS Resume Reviewer and Career Coach.
+You are an experienced ATS Resume Reviewer.
 
-Analyze the following resume against the job description.
+Analyze the following resume.
 
 Resume:
 {resume_text}
@@ -31,23 +31,33 @@ Detected Skills:
 Missing Skills:
 {", ".join(missing_skills)}
 
-Respond in this format:
+Return the response EXACTLY in this Markdown format.
 
-## Resume Strengths
-- Mention 3 strengths.
+## 💪 Resume Strengths
 
-## Areas for Improvement
-- Mention 3 weaknesses.
+- Strength 1
+- Strength 2
+- Strength 3
 
-## ATS Score Improvement Tips
-- Give practical ATS improvement suggestions.
+## ⚠️ Areas for Improvement
 
-## Recommended Projects
-- Suggest 2 projects based on the missing skills.
+- Improvement 1
+- Improvement 2
+- Improvement 3
 
-Keep the response under 250 words.
-Use bullet points.
-Be specific and actionable.
+## 📈 ATS Improvement Tips
+
+- Tip 1
+- Tip 2
+- Tip 3
+
+## 🚀 Recommended Projects
+
+- Project 1
+- Project 2
+
+Keep the response under 220 words.
+Only return the markdown.
 """
 
     try:

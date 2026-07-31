@@ -111,21 +111,55 @@ li {
 }
 
 .ai-feedback-card{
-    margin-top:30px;
-    padding:25px;
+    margin-top:40px;
     background:white;
-    border-radius:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
 }
 
 .ai-feedback-card h2{
-    margin-bottom:15px;
+    margin-bottom:20px;
+    color:#333;
 }
 
-.ai-feedback-card pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    font-family: inherit;
-    line-height: 1.6;
+.ai-content h2{
+    margin-top:25px;
+    color:#2e8b57;
+}
+
+.ai-content ul{
+    padding-left:20px;
+}
+
+.ai-content li{
+    margin-bottom:10px;
+    line-height:1.6;
+}
+
+.chart-card{
+
+    background:white;
+
+    padding:25px;
+
+    margin-top:30px;
+
+    border-radius:15px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+.chart-card{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    margin:30px 0;
+    text-align:center;
+}
+
+.chart-card canvas{
+    max-width:350px;
+    margin:auto;
 }

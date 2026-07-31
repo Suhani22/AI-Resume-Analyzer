@@ -28,3 +28,4 @@ def find_missing_skills(detected_skills):
             missing_skills.append(skill)
 
     return missing_skills
+

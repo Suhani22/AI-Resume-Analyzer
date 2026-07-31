@@ -4,8 +4,9 @@
     <title>Resume Analysis</title>
     <link rel="stylesheet" 
     href = "{{url_for('static', filename= 'style.css')}}">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
     <div class="container">
     <h1>Resume Analyzer</h1>
@@ -29,6 +30,7 @@
         </div>
     </div>
 
+
     <div class = "skills-section">
         <div class="skills-card detected">
             <h2>✅ Detected Skills</h2>
@@ -51,10 +53,61 @@
         </div>
     </div>
 
-    <div class = "ai- feedback-card">
-        <h2>🤖 AI Resume Feedback</h2>
-        <pre>{{ suggestions }}</pre>
+    <div class="ai-feedback-card">
+    <h2>🤖 AI Resume Feedback</h2>
+
+    <div class="ai-content">
+        {{ suggestions | safe }}
     </div>
+</div>
+
+<div class="chart-card">
+    <h2>📊 ATS Score</h2>
+
+    <canvas id="resumeChart" height="250"></canvas>
+</div>
+
     </div>
+
+   
+
+  <script>
+window.onload = function () {
+
+    const ctx = document.getElementById("resumeChart");
+
+    new Chart(ctx, {
+        type: "doughnut",
+
+        data: {
+            labels: ["ATS Score", "Remaining"],
+
+            datasets: [{
+                data: [
+                    {{ score }},
+                    {{ 100 - score }}
+                ],
+                backgroundColor: [
+                    "#2ecc71",
+                    "#e5e7eb"
+                ],
+                borderWidth: 0
+            }]
+        },
+
+        options: {
+            responsive: true,
+            cutout: "70%",
+
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            }
+        }
+    });
+
+};
+</script>
 </body>
 </html>

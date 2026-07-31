@@ -4,6 +4,7 @@ from utils.skill_extractor import (extract_skills, SKILLS, find_missing_skills)
 from utils.resume_scorer import calculate_score
 from utils.job_matcher import calculate_match
 from utils.suggestions import generate_suggestions
+import markdown
 import os
 
 app=Flask(__name__)
@@ -29,6 +30,7 @@ def upload():
     missing_skills= find_missing_skills(skills)
 
     suggestions= generate_suggestions(text, job_description, skills, missing_skills)
+    suggestions_html = markdown.markdown(suggestions)
 
     score = calculate_score(skills, len(SKILLS)) 
     job_match = calculate_match(skills, job_skills) 
@@ -39,10 +41,9 @@ def upload():
     "results.html",
     skills=skills,
     missing_skills=missing_skills,
-    suggestions=suggestions,
+    suggestions=suggestions_html,
     score=score,
-    job_match=job_match
-    )
+    job_match=job_match    )
 
 if __name__ == '__main__':
     app.run(debug=True)
