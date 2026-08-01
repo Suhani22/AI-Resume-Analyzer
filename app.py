@@ -1,9 +1,10 @@
-from flask import Flask , render_template, request
+from flask import Flask , render_template, request, send_file
 from utils.pdf_reader import extract_text
 from utils.skill_extractor import (extract_skills, SKILLS, find_missing_skills)
 from utils.resume_scorer import calculate_score
 from utils.job_matcher import calculate_match
 from utils.suggestions import generate_suggestions
+from utils.pdf_generator import create_pdf
 import markdown
 import os
 
@@ -36,7 +37,15 @@ def upload():
     job_match = calculate_match(skills, job_skills) 
 
     print("Job match:", job_match)
-   
+    global report_data
+
+    report_data = {
+        "score": score,
+        "job_match": job_match,
+        "skills": skills,
+        "missing_skills": missing_skills,
+        "suggestions": suggestions
+    }
     return render_template(
     "results.html",
     skills=skills,
@@ -44,6 +53,25 @@ def upload():
     suggestions=suggestions_html,
     score=score,
     job_match=job_match    )
+
+@app.route("/download")
+def download_report():
+
+    filename = "Resume_Analysis_Report.pdf"
+
+    create_pdf(
+        filename,
+        report_data["score"],
+        report_data["job_match"],
+        report_data["skills"],
+        report_data["missing_skills"],
+        report_data["suggestions"]
+    )
+
+    return send_file(
+        filename,
+        as_attachment=True
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)
