@@ -1,6 +1,6 @@
 # 🤖 AI Resume Analyzer
 
-An AI-powered Resume Analyzer built with Flask and Groq AI that compares a resume against a Job Description, extracts skills, calculates Job Match, identifies missing skills, generates AI feedback, and allows users to download a PDF report.
+An AI-powered Resume Analyzer that compares a resume against a Job Description, extracts relevant skills, calculates Job Match, identifies missing skills, generates personalized AI feedback using Groq LLM, and allows users to download a professional PDF report.
 
 ---
 
@@ -124,7 +124,7 @@ Upload your resume and paste a Job Description.
 ---
 
 
-### Analysis Result
+### Analysis Dashboard
 
 View Job Match percentage, ATS chart, matching skills and missing skills.
 ![Results 1](output/result_page_1.png)
@@ -139,6 +139,7 @@ Receive personalized AI-generated suggestions to improve your resume.
 ### PDF Report
 
 ![PDF Report](output/report_download.png)
+
 
 ---
 
@@ -170,9 +171,9 @@ Receive personalized AI-generated suggestions to improve your resume.
 
 **Suhani Setia**
 
-GitHub: https://github.com/Suhani22
+GitHub: [Suhani22] https://github.com/Suhani22
 
-LinkedIn:(https://www.linkedin.com/in/suhani-setia-9a45b720b/)
+LinkedIn:[Suhani Setia](https://www.linkedin.com/in/suhani-setia-9a45b720b/)
 
 ---
 
