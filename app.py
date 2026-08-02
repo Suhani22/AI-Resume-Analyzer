@@ -1,7 +1,6 @@
 from flask import Flask , render_template, request, send_file
 from utils.pdf_reader import extract_text
-from utils.skill_extractor import (extract_skills, SKILLS, find_missing_skills)
-from utils.resume_scorer import calculate_score
+from utils.skill_extractor import (extract_skills, find_missing_skills, find_matching_skills)
 from utils.job_matcher import calculate_match
 from utils.suggestions import generate_suggestions
 from utils.pdf_generator import create_pdf
@@ -26,42 +25,41 @@ def upload():
 
     text = extract_text(file_path)
 
-    skills= extract_skills(text)
-    job_skills= extract_skills(job_description)
-    missing_skills= find_missing_skills(skills)
+    skills= extract_skills(text)                           #resume skills
+    job_skills= extract_skills(job_description)            #job description skills
+    missing_skills= find_missing_skills(skills, job_skills)
+    matching_skills = find_matching_skills(skills, job_skills)
 
     suggestions= generate_suggestions(text, job_description, skills, missing_skills)
     suggestions_html = markdown.markdown(suggestions)
 
-    score = calculate_score(skills, len(SKILLS)) 
-    job_match = calculate_match(skills, job_skills) 
+    job_match = calculate_match(matching_skills, job_skills) 
 
-    print("Job match:", job_match)
     global report_data
 
     report_data = {
-        "score": score,
         "job_match": job_match,
-        "skills": skills,
+        "skills": matching_skills,
         "missing_skills": missing_skills,
         "suggestions": suggestions
     }
     return render_template(
     "results.html",
-    skills=skills,
+    skills=matching_skills,
     missing_skills=missing_skills,
     suggestions=suggestions_html,
-    score=score,
     job_match=job_match    )
 
 @app.route("/download")
 def download_report():
 
+    global report_data
+    if "report_data" not in globals():
+        return "Please analyze a resume first."
     filename = "Resume_Analysis_Report.pdf"
 
     create_pdf(
         filename,
-        report_data["score"],
         report_data["job_match"],
         report_data["skills"],
         report_data["missing_skills"],

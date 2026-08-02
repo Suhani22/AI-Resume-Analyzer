@@ -1,92 +1,94 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Resume Analysis</title>
-    <link rel="stylesheet" 
-    href = "{{url_for('static', filename= 'style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename= 'style.css')}}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
     <div class="container">
-    <h1>Resume Analyzer</h1>
+        <h1>Resume Analyzer</h1>
 
-    <div class="cards">
         <div class="card">
-        <h2> Resume score</h2>
-        <h1> {{score}}/100</h1>
-        <div class="progress">
-            <div class="progress-fill" style="width: {{score}}%"></div>
-        </div>
-        </div>
-
-        <div class = "card">
-            <h2>Job Match</h2>
+            <h2>🎯 ATS Match</h2>
+            <p class="card-info">
+    Percentage of required job skills found in your resume.
+</p>
             <h1>{{job_match}}%</h1>
 
             <div class="progress">
-            <div class="progress-fill" style="width: {{job_match}}%"></div>
+                <div class="progress-fill" style="width: {{job_match}}%"></div>
+            </div>
         </div>
+
+
+        <div class="chart-card">
+            <h2>📊 ATS Match Visualization</h2>
+
+            <canvas id="resumeChart" height="250"></canvas>
+        </div>
+
+
+
+
+        <div class="skills-section">
+            <div class="skills-card detected">
+                <h2>✅ Matched Skills</h2>
+
+                <ul>
+                    {% for skill in skills %}
+                    <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+            <div class="skills-card missing">
+                <h2>❌ Missing Skills</h2>
+                <ul>
+                    {% for skill in missing_skills %}
+                    <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="ai-feedback-card">
+            <h2>🤖 AI Resume Feedback</h2>
+
+            <div class="ai-content">
+                {{ suggestions | safe }}
+            </div>
         </div>
     </div>
-
-
-    <div class = "skills-section">
-        <div class="skills-card detected">
-            <h2>✅ Detected Skills</h2>
-
-        <ul>
-            {% for skill in skills %}
-                <li>{{ skill }}</li>
-            {% endfor %}
-        </ul>
-
-        </div>
-
-        <div class="skills-card missing">
-            <h2>❌ Missing Skills</h2>
-            <ul>
-            {% for skill in missing_skills %}
-                <li>{{ skill }}</li>
-            {% endfor %}
-        </ul>
-        </div>
-    </div>
-
-    <div class="ai-feedback-card">
-    <h2>🤖 AI Resume Feedback</h2>
-
-    <div class="ai-content">
-        {{ suggestions | safe }}
-    </div>
-</div>
-
-<div class="chart-card">
+    <!-- <div class="chart-card">
     <h2>📊 ATS Score</h2>
 
     <canvas id="resumeChart" height="250"></canvas>
 </div>
 
-    </div>
+    </div> -->
 
-   
 
-  <script>
-window.onload = function () {
 
-    const ctx = document.getElementById("resumeChart");
+    <script>
+        window.onload = function () {
 
-    new Chart(ctx, {
-        type: "doughnut",
+            const ctx = document.getElementById("resumeChart");
 
-        data: {
-            labels: ["ATS Score", "Remaining"],
+            new Chart(ctx, {
+                type: "doughnut",
 
-            datasets: [{
-                data: [
-                    {{ score }},
-                    {{ 100 - score }}
-                ],
+                data: {
+                    labels: ["ATS Score", "Remaining"],
+
+                    datasets: [{
+                        data: [
+                            {{ job_match }},
+                    {{ 100 - job_match }}
+],
                 backgroundColor: [
                     "#2ecc71",
                     "#e5e7eb"
@@ -95,11 +97,11 @@ window.onload = function () {
             }]
         },
 
-        options: {
+            options: {
             responsive: true,
-            cutout: "70%",
+                cutout: "70%",
 
-            plugins: {
+                    plugins: {
                 legend: {
                     position: "bottom"
                 }
@@ -108,12 +110,17 @@ window.onload = function () {
     });
 
 };
-</script>
+    </script>
 
-<div class="download-section">
-    <a href="/download" class="download-btn">
-        📄 Download Report (PDF)
-    </a>
-</div>
+
+
+    <div class="download-section">
+        <a href="/download" class="download-btn">
+            📄 Download Report (PDF)
+        </a>
+    </div>
+
+
 </body>
+
 </html>

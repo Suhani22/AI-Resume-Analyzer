@@ -4,7 +4,6 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 def create_pdf(
     filename,
-    score,
     job_match,
     skills,
     missing_skills,
@@ -18,8 +17,6 @@ def create_pdf(
     story = []
 
     story.append(Paragraph("<b>Resume Analysis Report</b>", styles["Title"]))
-
-    story.append(Paragraph(f"Resume Score: {score}/100", styles["BodyText"]))
 
     story.append(Paragraph(f"Job Match: {job_match}%", styles["BodyText"]))
 
