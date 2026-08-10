@@ -9,13 +9,133 @@
 
 <body>
     <div class="container">
+
+        {% if analysis_type == "general" %}
+        <div class="card">
+            <h1>📄 General Resume Review</h1>
+
+            <h2>{{ats_score}} / 100 </h2>
+            <p class="card-info">
+                Overall ATS Resume Score
+            </p>
+        </div>
+
+        <div class="skills-section">
+
+            <div class="skills-card detected">
+
+                <h2>💪 Resume Strengths</h2>
+
+                <ul>
+
+                    {% for item in review.strengths %}
+
+                    <li>{{ item }}</li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+            <div class="skills-card missing">
+
+                <h2>⚠️ Weaknesses</h2>
+
+                <ul>
+
+                    {% for item in review.weaknesses %}
+
+                    <li>{{ item }}</li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-card">
+
+    <h2>📊 Category Scores</h2>
+
+    {% for category, score in review.scores.items() %}
+
+    <div class="score-item">
+
+        <div class="score-header">
+
+            <span>{{ category }}</span>
+
+            {% if category == "Education" %}
+                {% set max = 10 %}
+            {% elif category == "ATS Keywords" %}
+                {% set max = 5 %}
+            {% elif category == "Formatting" %}
+                {% set max = 5 %}
+            {% else %}
+                {% set max = 20 %}
+            {% endif %}
+
+            <span>{{ score }}/{{ max }}</span>
+
+        </div>
+
+        <div class="score-bar">
+
+            <div class="score-fill"
+                 style="width: {{ (score / max) * 100 }}%;">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+        <div class="ai-feedback-card">
+
+            <h2>🚀 Suggestions</h2>
+
+            <ul>
+
+                {% for item in review.suggestions %}
+
+                <li>{{ item }}</li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+
+        <div class="ai-feedback-card">
+
+            <h2>✅ Final Verdict</h2>
+
+            <p>
+
+                {{ review.final_verdict }}
+
+            </p>
+
+        </div>
+
+        {% else %}
         <h1>Resume Analyzer</h1>
 
         <div class="card">
             <h2>🎯 ATS Match</h2>
             <p class="card-info">
-    Percentage of required job skills found in your resume.
-</p>
+                Percentage of required job skills found in your resume.
+            </p>
             <h1>{{job_match}}%</h1>
 
             <div class="progress">
@@ -62,64 +182,54 @@
                 {{ suggestions | safe }}
             </div>
         </div>
-    </div>
-    <!-- <div class="chart-card">
-    <h2>📊 ATS Score</h2>
 
-    <canvas id="resumeChart" height="250"></canvas>
-</div>
+        <script>
+            window.onload = function () {
 
-    </div> -->
+                const ctx = document.getElementById("resumeChart");
 
+                new Chart(ctx, {
+                    type: "doughnut",
 
+                    data: {
+                        labels: ["ATS Score", "Remaining"],
 
-    <script>
-        window.onload = function () {
-
-            const ctx = document.getElementById("resumeChart");
-
-            new Chart(ctx, {
-                type: "doughnut",
-
-                data: {
-                    labels: ["ATS Score", "Remaining"],
-
-                    datasets: [{
-                        data: [
-                            {{ job_match }},
-                    {{ 100 - job_match }}
+                        datasets: [{
+                            data: [
+                                {{ job_match }},
+                        {{ 100 - job_match }}
 ],
-                backgroundColor: [
-                    "#2ecc71",
-                    "#e5e7eb"
-                ],
-                borderWidth: 0
-            }]
+                    backgroundColor: [
+                        "#2ecc71",
+                        "#e5e7eb"
+                    ],
+                    borderWidth: 0
+                }]
         },
 
-            options: {
-            responsive: true,
-                cutout: "70%",
+                options: {
+                responsive: true,
+                    cutout: "70%",
 
-                    plugins: {
-                legend: {
-                    position: "bottom"
+                        plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
                 }
             }
-        }
     });
 
 };
-    </script>
+        </script>
 
+        <div class="download-section">
+            <a href="/download" class="download-btn">
+                📄 Download Report (PDF)
+            </a>
+        </div>
 
-
-    <div class="download-section">
-        <a href="/download" class="download-btn">
-            📄 Download Report (PDF)
-        </a>
+        {% endif %}
     </div>
-
 
 </body>
 

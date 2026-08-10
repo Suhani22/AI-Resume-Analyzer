@@ -4,6 +4,7 @@ from utils.skill_extractor import (extract_skills, find_missing_skills, find_mat
 from utils.job_matcher import calculate_match
 from utils.suggestions import generate_suggestions
 from utils.pdf_generator import create_pdf
+from utils.general_review import generate_general_review
 import markdown
 import os
 
@@ -17,6 +18,8 @@ def home():
 
 @app.route("/upload", methods=["POST"])
 def upload():
+    analysis_type = request.form["analysis_type"]
+
     resume = request.files["resume"]
     job_description = request.form["job_description"]
 
@@ -24,6 +27,18 @@ def upload():
     resume.save(file_path)
 
     text = extract_text(file_path)
+
+    if analysis_type == "general":
+
+        review = generate_general_review(text)
+        ats_score = sum(review["scores"].values())
+
+        return render_template(
+        "results.html",
+        analysis_type="general",
+        review=review,
+        ats_score=ats_score
+    )
 
     skills= extract_skills(text)                           #resume skills
     job_skills= extract_skills(job_description)            #job description skills

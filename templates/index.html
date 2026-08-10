@@ -3,8 +3,7 @@
 
 <head>
     <title> AI Resume Analyzer</title>
-    <link rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
@@ -13,25 +12,146 @@
 
             <h1>🤖 AI Resume Analyzer</h1>
 
-            <p class="subtitle">
+            <p class="subtitle" id="subtitle">
                 Upload your resume, compare it with a job description,
                 and receive AI-powered ATS feedback instantly.
             </p>
-            <form action="upload" method="post" enctype="multipart/form-data">
-                <h2>📄 Upload Resume (PDF)</h2>
-                <input type="file" name="resume" accept=".pdf" required>
-                
+            <form action="/upload" method="POST" enctype="multipart/form-data">
 
+                <h2>Choose Analysis Type</h2>
 
-                <h2>💼 Paste Job Description</h2>
-                <textarea name="job_description" rows="10" cols="60"
-                    placeholder="Paste the Job Description here..."></textarea>
+                <div class="analysis-options">
 
-                <br><br>
-                <button type="submit">Analyze Resume </button>
+                    <label class="option-card">
+                        <input type="radio" name="analysis_type" value="general">
+
+                        <strong>📄 General Resume Review</strong>
+                        <p>Analyze your resume and receive AI-powered ATS feedback.</p>
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio" name="analysis_type" value="job">
+
+                        <strong>💼 Resume vs Job Description</strong>
+                        <p>Compare your resume against a specific job posting.</p>
+                    </label>
+
+                </div>
+
+                <br>
+                <div id="analysisSection" style="display:none;">
+
+                    <h2>📄 Upload Resume (PDF)</h2>
+
+                    <input type="file" name="resume" accept=".pdf" required>
+
+                    <br><br>
+
+                    <div id="jdSection" style="display:none;">
+
+                        <h2>💼 Job Description</h2>
+
+                        <textarea name="job_description" rows="10"
+                            placeholder="Paste the Job Description here..."></textarea>
+
+                    </div>
+
+                    <br>
+
+                    <button type="submit" id="submitBtn">
+                        Analyze Resume
+                    </button>
+                </div>
             </form>
         </div>
     </div>
+
+    <script>
+
+        const radios = document.querySelectorAll(
+            'input[name="analysis_type"]'
+        );
+
+        const cards = document.querySelectorAll(".option-card");
+
+        const subtitle =
+            document.getElementById("subtitle");
+
+        const jdSection =
+            document.getElementById("jdSection");
+
+        const analysisSection =
+            document.getElementById("analysisSection");
+
+        const submitBtn =
+            document.getElementById("submitBtn");
+
+        function toggleJD() {
+
+            const selected =
+                document.querySelector(
+                    'input[name="analysis_type"]:checked'
+                );
+
+            // Nothing selected yet
+            if (!selected) {
+
+                analysisSection.style.display = "none";
+
+                cards.forEach(card =>
+                    card.classList.remove("selected")
+                );
+
+                subtitle.innerHTML =
+                    "Choose how you'd like to analyze your resume.";
+
+                return;
+            }
+
+            analysisSection.style.display = "block";
+
+            cards.forEach(card =>
+                card.classList.remove("selected")
+            );
+
+            selected
+                .closest(".option-card")
+                .classList.add("selected");
+
+            if (selected.value === "job") {
+
+                jdSection.style.display = "block";
+
+                subtitle.innerHTML =
+                    "Compare your resume against a job description to identify missing skills and calculate your job match.";
+
+                submitBtn.innerHTML =
+                    "Analyze Job Match";
+
+            }
+
+            else {
+
+                jdSection.style.display = "none";
+
+                subtitle.innerHTML =
+                    "Analyze your resume and receive AI-powered ATS feedback, resume strengths, weaknesses, and improvement suggestions.";
+
+                submitBtn.innerHTML =
+                    "Analyze Resume";
+
+            }
+
+        }
+
+        radios.forEach(radio =>
+            radio.addEventListener("change", toggleJD)
+        );
+
+        toggleJD();
+    </script>
+
+
 </body>
 
 </html>

@@ -330,3 +330,80 @@ h2 {
     font-size:14px;
     margin-top:10px;
 }
+
+.analysis-options{
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    margin:25px 0;
+    flex-wrap:wrap;
+}
+
+.option-card{
+    width:280px;
+    padding:20px;
+    border:2px solid #ddd;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.3s;
+    background:white;
+}
+
+.option-card:hover{
+    border-color:#4f46e5;
+    transform:translateY(-4px);
+}
+
+.option-card input{
+    margin-right:8px;
+}
+
+.option-card{
+    background:white;
+    border:2px solid #ddd;
+    transition:0.3s;
+}
+
+.option-card.selected{
+    background:#eef4ff;
+    border-color:#4f46e5;
+    box-shadow:0 8px 20px rgba(79,70,229,.15);
+}
+.option-card input[type="radio"]{
+    display:none;
+}
+
+.score-item{
+    margin-bottom:22px;
+}
+
+.score-header{
+    display:flex;
+    justify-content:space-between;
+    font-weight:600;
+    margin-bottom:8px;
+    color:#2c3e50;
+}
+
+.score-bar{
+
+    width:100%;
+    height:12px;
+
+    background:#e9ecef;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+.score-fill{
+
+    height:100%;
+
+    background:linear-gradient(90deg,#4facfe,#00c6ff);
+
+    border-radius:20px;
+
+    transition:width .5s ease;
+}
