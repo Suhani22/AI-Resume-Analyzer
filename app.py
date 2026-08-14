@@ -1,6 +1,7 @@
 from flask import Flask , render_template, request, send_file
 from utils.pdf_reader import extract_text
-from utils.skill_extractor import (extract_skills, find_missing_skills, find_matching_skills)
+from utils.skill_extractor import ( find_missing_skills, find_matching_skills)
+from utils.llm_skill_extractor import extract_skills_with_llm
 from utils.job_matcher import calculate_match
 from utils.suggestions import generate_suggestions
 from utils.pdf_generator import create_pdf
@@ -40,8 +41,8 @@ def upload():
         ats_score=ats_score
     )
 
-    skills= extract_skills(text)                           #resume skills
-    job_skills= extract_skills(job_description)            #job description skills
+    skills= extract_skills_with_llm(text)                           #resume skills
+    job_skills= extract_skills_with_llm(job_description)            #job description skills
     missing_skills= find_missing_skills(skills, job_skills)
     matching_skills = find_matching_skills(skills, job_skills)
 
