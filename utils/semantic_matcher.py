@@ -2,6 +2,7 @@ from sentence_transformers import SentenceTransformer, util
 model = SentenceTransformer('all-MiniLM-L6-v2')
 def semantic_match(resume_skills, job_skills):
     matched = []
+    missing = []
 
     resume_embeddings= model.encode(resume_skills, convert_to_tensor=True)
     job_embeddings = model.encode(job_skills, convert_to_tensor=True)
@@ -21,4 +22,10 @@ def semantic_match(resume_skills, job_skills):
                 "similarity": round(best_score, 2)
          })
 
-    return matched
+        else:
+            missing.append(job_skill)
+
+    return {
+    "matched": matched,
+    "missing": missing
+}

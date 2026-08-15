@@ -1,7 +1,6 @@
-def calculate_match(matching_skills, job_skills):
+def calculate_match(matched_count, total_job_skills):
 
-    matched = len(matching_skills)
+    if total_job_skills == 0:
+        return 0
 
-    match_percentage = (matched / len(job_skills)) * 100
-
-    return round(match_percentage, 1)
+    return round((matched_count / total_job_skills) * 100, 1)

@@ -59,44 +59,43 @@
 
         <div class="chart-card">
 
-    <h2>📊 Category Scores</h2>
+            <h2>📊 Category Scores</h2>
 
-    {% for category, score in review.scores.items() %}
+            {% for category, score in review.scores.items() %}
 
-    <div class="score-item">
+            <div class="score-item">
 
-        <div class="score-header">
+                <div class="score-header">
 
-            <span>{{ category }}</span>
+                    <span>{{ category }}</span>
 
-            {% if category == "Education" %}
-                {% set max = 10 %}
-            {% elif category == "ATS Keywords" %}
-                {% set max = 5 %}
-            {% elif category == "Formatting" %}
-                {% set max = 5 %}
-            {% else %}
-                {% set max = 20 %}
-            {% endif %}
+                    {% if category == "Education" %}
+                    {% set max = 10 %}
+                    {% elif category == "ATS Keywords" %}
+                    {% set max = 5 %}
+                    {% elif category == "Formatting" %}
+                    {% set max = 5 %}
+                    {% else %}
+                    {% set max = 20 %}
+                    {% endif %}
 
-            <span>{{ score }}/{{ max }}</span>
+                    <span>{{ score }}/{{ max }}</span>
 
-        </div>
+                </div>
 
-        <div class="score-bar">
+                <div class="score-bar">
 
-            <div class="score-fill"
-                 style="width: {{ (score / max) * 100 }}%;">
+                    <div class="score-fill" style="width: {{ (score / max) * 100 }}%;">
+
+                    </div>
+
+                </div>
 
             </div>
 
+            {% endfor %}
+
         </div>
-
-    </div>
-
-    {% endfor %}
-
-</div>
 
 
         <div class="ai-feedback-card">
@@ -158,8 +157,20 @@
                 <h2>✅ Matched Skills</h2>
 
                 <ul>
-                    {% for skill in skills %}
-                    <li>{{ skill }}</li>
+                    {% for match in skills %}
+
+                    <li>
+
+                        <strong>{{ match.job_skill }}</strong>
+
+                        →
+
+                        {{ match.resume_skill }}
+
+                        ({{ match.similarity }})
+
+                    </li>
+
                     {% endfor %}
                 </ul>
 

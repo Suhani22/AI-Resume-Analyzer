@@ -1,5 +1,6 @@
 from flask import Flask , render_template, request, send_file
 from utils.pdf_reader import extract_text
+from utils.semantic_matcher import semantic_match
 from utils.skill_extractor import ( find_missing_skills, find_matching_skills)
 from utils.llm_skill_extractor import extract_skills_with_llm
 from utils.job_matcher import calculate_match
@@ -43,13 +44,20 @@ def upload():
 
     skills= extract_skills_with_llm(text)                           #resume skills
     job_skills= extract_skills_with_llm(job_description)            #job description skills
-    missing_skills= find_missing_skills(skills, job_skills)
-    matching_skills = find_matching_skills(skills, job_skills)
+
+    match_result = semantic_match(
+       skills,
+       job_skills
+    )
+
+    matching_skills = match_result["matched"]
+
+    missing_skills = match_result["missing"]
 
     suggestions= generate_suggestions(text, job_description, skills, missing_skills)
     suggestions_html = markdown.markdown(suggestions)
 
-    job_match = calculate_match(matching_skills, job_skills) 
+    job_match = calculate_match( len(matching_skills),len(job_skills)) 
 
     global report_data
 
