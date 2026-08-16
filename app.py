@@ -1,7 +1,6 @@
 from flask import Flask , render_template, request, send_file
 from utils.pdf_reader import extract_text
 from utils.semantic_matcher import semantic_match
-from utils.skill_extractor import ( find_missing_skills, find_matching_skills)
 from utils.llm_skill_extractor import extract_skills_with_llm
 from utils.job_matcher import calculate_match
 from utils.suggestions import generate_suggestions
@@ -69,6 +68,7 @@ def upload():
     }
     return render_template(
     "results.html",
+    analysis_type="job",
     skills=matching_skills,
     missing_skills=missing_skills,
     suggestions=suggestions_html,

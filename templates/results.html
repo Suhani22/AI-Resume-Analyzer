@@ -131,7 +131,7 @@
         <h1>Resume Analyzer</h1>
 
         <div class="card">
-            <h2>🎯 ATS Match</h2>
+            <h2>🎯 Job Match</h2>
             <p class="card-info">
                 Percentage of required job skills found in your resume.
             </p>
@@ -144,7 +144,7 @@
 
 
         <div class="chart-card">
-            <h2>📊 ATS Match Visualization</h2>
+            <h2>📊 Job Match Visualization</h2>
 
             <canvas id="resumeChart" height="250"></canvas>
         </div>
@@ -157,20 +157,8 @@
                 <h2>✅ Matched Skills</h2>
 
                 <ul>
-                    {% for match in skills %}
-
-                    <li>
-
-                        <strong>{{ match.job_skill }}</strong>
-
-                        →
-
-                        {{ match.resume_skill }}
-
-                        ({{ match.similarity }})
-
-                    </li>
-
+                    {% for skill in skills %}
+                    <li>{{ skill.job_skill }}</li>
                     {% endfor %}
                 </ul>
 
