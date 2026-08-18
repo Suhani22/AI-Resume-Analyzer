@@ -62,7 +62,7 @@ Only return the markdown.
 
     try:
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-20b",
             messages=[
                 {
                     "role": "user",
@@ -72,6 +72,18 @@ Only return the markdown.
             temperature=0.3,
             max_tokens=500
         )
+
+        print("\n========== SUGGESTIONS RESPONSE ==========\n")
+        print(response)
+
+        print("\n========== CONTENT ==========\n")
+        print(repr(response.choices[0].message.content))
+
+        print("\n========== REASONING ==========\n")
+        print(response.choices[0].message.reasoning)
+
+        print("\n========== FINISH REASON ==========\n")
+        print(response.choices[0].finish_reason)
 
         return response.choices[0].message.content
 

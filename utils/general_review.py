@@ -92,7 +92,7 @@ Return JSON only.
     try:
 
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-20b",
             messages=[
                 {
                     "role": "user",
@@ -100,14 +100,17 @@ Return JSON only.
                 }
             ],
             temperature=0.3,
-            max_tokens=700
+            max_tokens=1500
         )
 
-        content = response.choices[0].message.content.strip()
+        content = response.choices[0].message.content
         content = content.replace("```json", "")
         content = content.replace("```", "")
         content = content.strip()
-        review = json.loads(content)
+        print("\n========== RAW MODEL RESPONSE ==========\n")
+        print(content)
+        print("\n========================================\n")
+        review = json.loads(content) 
         return review
 
     except Exception as e:

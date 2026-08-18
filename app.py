@@ -28,6 +28,9 @@ def upload():
     resume.save(file_path)
 
     text = extract_text(file_path)
+    print("\n========== RESUME TEXT ==========\n")
+    print(text[:2000])     # first 2000 characters
+    print("\n=================================\n")
 
     if analysis_type == "general":
 
@@ -44,19 +47,27 @@ def upload():
     skills= extract_skills_with_llm(text)                           #resume skills
     job_skills= extract_skills_with_llm(job_description)            #job description skills
 
+    print("Resume Skills:", skills)
+    print("Job Skills:", job_skills)
+
     match_result = semantic_match(
        skills,
        job_skills
     )
 
-    matching_skills = match_result["matched"]
+    print("Match Result:", match_result)
 
+    matching_skills = match_result["matched"]
     missing_skills = match_result["missing"]
+
+    print("Matched Skills:", matching_skills)
+    print("Missing Skills:", missing_skills)
 
     suggestions= generate_suggestions(text, job_description, skills, missing_skills)
     suggestions_html = markdown.markdown(suggestions)
 
     job_match = calculate_match( len(matching_skills),len(job_skills)) 
+    print("Job Match:", job_match)
 
     global report_data
 

@@ -52,7 +52,7 @@ Text:
 """
     try:
         response= client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+        model="groq/compound-mini",
         messages=[{
             "role": "user",
             "content": prompt 
@@ -61,12 +61,27 @@ Text:
         temperature=0.0,
         max_tokens=500
     )
+        print("\n========== FULL RESPONSE ==========\n")
+        print(response)
 
-        content = response.choices[0].message.content.strip()
+        print("\n========== CHOICE ==========\n")
+        print(response.choices[0])
+
+        print("\n========== MESSAGE ==========\n")
+        print(response.choices[0].message)
+
+        print("\n========== FINISH REASON ==========\n")
+        print(response.choices[0].finish_reason) 
+        content = response.choices[0].message.content
+        print("CONTENT:", repr(content))
         content = content.replace("```json", "")
         content = content.replace("```", "")
         content = content.strip()
 
+        print("\n========== LLM SKILL EXTRACTION ==========\n")
+        print(content)
+        print("\n=========================================\n")
+ 
         data=json.loads(content)
         return data.get("skills", [])
 
