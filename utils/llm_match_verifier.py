@@ -1,7 +1,8 @@
+import json
 import os
 
-from dotenv import load_dotenv
 from groq import Groq
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -9,47 +10,75 @@ client = Groq(
     api_key=os.getenv("GROQ_API_KEY")
 )
 
-def verify_match(job_skill, resume_skill):
+
+def verify_matches_with_llm(resume_skills, job_skills):
+
+    if not resume_skills or not job_skills:
+        return []
+
     prompt = f"""
-You are an expert in professional skills, technologies, certifications, software tools, frameworks, programming languages, and job competencies.
+You are an expert AI recruiter.
 
-Determine whether the following two skills should be considered the SAME skill for resume-job matching.
+Compare the following Resume Skills and Job Skills.
 
-Skill 1:
-{job_skill}
+Resume Skills:
+{resume_skills}
 
-Skill 2:
-{resume_skill}
+Job Skills:
+{job_skills}
+
+Find only semantic matches.
+
+Examples:
+
+GitHub = Git
+REST API = REST APIs
+ML = Machine Learning
+Amazon Web Services = AWS
 
 Rules:
 
-- Consider abbreviations.
-- Consider full forms.
-- Consider industry-standard synonyms.
-- Consider commonly accepted equivalent names.
-- Only answer YES if they represent the same competency.
-- Otherwise answer NO.
+- Return ONLY valid JSON.
+- Do not explain.
+- Do not invent matches.
+- Match only if they clearly represent the same skill or are closely related.
 
-Return ONLY one word.
+Return:
 
-YES
-
-or
-
-NO
+{{
+    "matched":[
+        {{
+            "resume":"...",
+            "job":"..."
+            "confidence":0.96
+        }}
+    ]
+}}
 """
 
     try:
-        response = client.chat.completions.create(
-        model="openai/gpt-oss-20b",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.0,
-        max_tokens=5
-    )
 
-        answer = response.choices[0].message.content.strip().upper()
-        return answer == "YES"
+        response = client.chat.completions.create(
+            model="openai/gpt-oss-20b",
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0
+        )
+
+        content = response.choices[0].message.content.strip()
+
+        content = content.replace("```json", "")
+        content = content.replace("```", "").strip()
+
+        data = json.loads(content)
+
+        return data["matched"]
 
     except Exception as e:
+
         print(e)
-        return False
+        return []
